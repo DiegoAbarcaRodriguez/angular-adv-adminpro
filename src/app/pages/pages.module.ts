@@ -6,11 +6,16 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { ProgressComponent } from './progress/progress.component';
 import { RouterModule } from '@angular/router';
 import { PagesComponent } from './pages.component';
+import { FormsModule } from '@angular/forms';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
     imports: [
         SharedModule,
         RouterModule,
+        ComponentsModule,
+        FormsModule,
+
     ],
     declarations:[
         DashboardComponent,

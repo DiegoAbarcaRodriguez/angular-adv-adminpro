@@ -1,1 +1,16 @@
-<p>grafica1 works!</p>
+<div class="row">
+    <div class="col-6">
+        <app-dona title="Ventas" [data]="{labels:['label1','label2','label3'],datasets:[{data:[200,20,600]}]}  " />
+    </div>
+    <div class="col-6">
+        <app-dona title="Compras" [data]="{labels:['Atún','Cerveza','Refresco'],datasets:[{data:[100,70,40]}]}" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <app-dona title="Cambios" />
+    </div>
+    <div class="col-6">
+        <app-dona />
+    </div>
+</div>
