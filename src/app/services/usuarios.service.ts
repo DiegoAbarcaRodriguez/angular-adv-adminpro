@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario.model';
 
 const baseURL = environment.base_url;
 
@@ -16,20 +17,37 @@ export class UsuarioService {
         private httpClient: HttpClient,
         private router: Router) { }
 
+    usuario!: Usuario;
+
+    get token() {
+        return localStorage.getItem('token') || '';
+    }
+
+    get uid() {
+        return this.usuario.uid || '';
+    }
+
     logout() {
         localStorage.removeItem('token');
+        if (this.usuario.google)
+            google.accounts.id.revoke(this.usuario.email, () => {
+            });
 
-        google.accounts.id.revoke('abarcarodriguezdiego@gmail.com', () => {
-            this.router.navigateByUrl('/login');
-        });
+        this.router.navigateByUrl('/login');
     }
-    validarToken(): Observable<boolean> {
-        const token = localStorage.getItem('token') || '';
 
-        return this.httpClient.get(baseURL + '/login/renew', { headers: { 'x-token': token } })
+
+    validarToken(): Observable<boolean> {
+
+
+        return this.httpClient.get(baseURL + '/login/renew', { headers: { 'x-token': this.token } })
             .pipe(
-                tap((resp: any) => localStorage.setItem('token', resp.token)),
-                map(resp => true),
+                map((resp: any) => {
+                    const { email, google, nombre, role, img, uid } = resp.usuario;
+                    this.usuario = new Usuario(nombre, email, img ?? '', role, img, google, uid);
+                    localStorage.setItem('token', resp.token);
+                    return true
+                }),
                 catchError(() => of(false))
             );
 
@@ -39,6 +57,15 @@ export class UsuarioService {
     crearUsuario(formData: RegisterForm) {
         return this.httpClient.post(baseURL + '/usuarios', formData)
             .pipe(tap((resp: any) => localStorage.setItem('token', resp.token)))
+    }
+
+    actualizarPefil(data: { email: string, nombre: string, role: string }) {
+        data = {
+            ...data,
+            role: this.usuario.role ?? 'USER_ROLE'
+        }
+
+        return this.httpClient.put(baseURL + '/usuarios/' + this.uid, data, { headers: { 'x-token': this.token } })
     }
 
     login(formData: LoginForm) {

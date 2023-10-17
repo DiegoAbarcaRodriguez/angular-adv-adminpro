@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Mi perfil de usuario</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <form class="form p-t-20" (ngSubmit)="actualizarPerfil()" [formGroup]="perfilForm!">
+                    <div class="form-group">
+                        <label for="exampleInputuname2">User Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="exampleInputuname2" placeholder="Username"
+                                formControlName="nombre">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">Email address</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email"
+                                formControlName="email" [readOnly]="usuario.google">
+                            <div class="input-group-addon"><i class="ti-email"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox checkbox-success">
+                            <input id="checkbox2" type="checkbox">
+                            <label for="checkbox2"> Remember me </label>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <button type="submit" [disabled]="perfilForm!.invalid"
+                            class="btn btn-success waves-effect btn-block waves-light m-r-10"> <i
+                                class="fa fa-save"></i>Guardar cambios</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Avatar</h4>
+                <h6 class="card-subtitle">Imagen del usuario</h6>
+                <div class="text-center" >
+                    <img *ngIf="!imagenTemp" class="img-avatar" [src]="usuario.imagenUrl">
+                    <img *ngIf="imagenTemp" class="img-avatar" [src]="imagenTemp">
+                </div>
+              
+                <input type="file" (change)="cambiarImagen($any($event.target).files[0])">
+
+                <br>
+                <br>
+
+                <button type="button " [disabled]="!imagenSubir" (click)="subirImagen()"
+                    class="btn btn-success btn-block waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Cambiar
+                    imagen </button>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
