@@ -13,6 +13,7 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CommonModule } from '@angular/common';
+import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 
 @NgModule({
     imports: [
@@ -24,7 +25,7 @@ import { CommonModule } from '@angular/common';
         CommonModule
 
     ],
-    declarations:[
+    declarations: [
         DashboardComponent,
         Grafica1Component,
         ProgressComponent,
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
         AccountSettingsComponent,
         PromesasComponent,
         RxjsComponent,
-        PerfilComponent
+        PerfilComponent,
+        UsuariosComponent
     ],
     exports: [],
 })

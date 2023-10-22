@@ -18,9 +18,7 @@ export class Usuario {
 
         if (this.img?.includes('https')) {
             return this.img;
-        }
-
-        if (this.img) {
+        } else if (this.img) {
             return `${baseUrl}/upload/usuarios/${this.img}`;
         } else {
             return `${baseUrl}/upload/usuarios/no-img`;
