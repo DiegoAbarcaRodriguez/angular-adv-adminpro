@@ -27,7 +27,7 @@
             <div class="card-body">
                 <h4 class="card-title">Usuarios</h4>
                 <h6 class="card-subtitle">Usuarios registrados en mi aplicación ({{totalUsuarios}})</h6>
-                <div class="table-responsive">
+                <div class="table-responsive" *ngIf="usuarios.length>0">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -41,7 +41,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of usuarios">
-                                <td class="text-center"> <img [src]="usuario.imagenUrl" class="avatar cursor" (click)="abrirModal(usuario)"></td>
+                                <td class="text-center"> <img [src]="usuario.imagenUrl" class="avatar cursor"
+                                        (click)="abrirModal(usuario)"></td>
                                 <td>{{usuario.email}} </td>
                                 <td> {{usuario.nombre}} </td>
                                 <td>

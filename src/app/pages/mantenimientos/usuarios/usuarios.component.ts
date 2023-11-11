@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { delay } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, delay } from 'rxjs';
+import { Hospital } from 'src/app/models/hospital.model';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedasService } from 'src/app/services/busquedas.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
@@ -11,13 +12,14 @@ import Swal from 'sweetalert2';
     templateUrl: 'usuarios.component.html'
 })
 
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
     usuarios: Usuario[] = [];
     usuariosTemp: Usuario[] = [];
     totalUsuarios: number = 0;
     desde: number = 0;
     cargando: boolean = true;
+    subscription?: Subscription;
 
     constructor(
         private usuarioService: UsuarioService,
@@ -25,9 +27,13 @@ export class UsuariosComponent implements OnInit {
         private modalImagenService: ModalImagenService
     ) { }
 
+    ngOnDestroy(): void {
+        this.subscription?.unsubscribe();
+    }
+
     ngOnInit(): void {
         this.cargarUsuarios();
-        this.modalImagenService.nuevaImagen
+        this.subscription = this.modalImagenService.nuevaImagen
             .pipe(delay(100))
             .subscribe(() => this.cargarUsuarios());
     }
@@ -80,13 +86,14 @@ export class UsuariosComponent implements OnInit {
             showCancelButton: true,
             confirmButtonText: 'Si, borrarlo'
         }).then((result) => {
-            this.usuarioService.eliminarUsuario(usuario)
-                .subscribe(
-                    () => {
-                        this.cargarUsuarios();
-                        Swal.fire('Usuario Eliminado', usuario.nombre + ' fue eliminado correctamente', 'success')
-                    }
-                );
+            if (result.isConfirmed)
+                this.usuarioService.eliminarUsuario(usuario)
+                    .subscribe(
+                        () => {
+                            this.cargarUsuarios();
+                            Swal.fire('Usuario Eliminado', usuario.nombre + ' fue eliminado correctamente', 'success')
+                        }
+                    );
         })
     }
 

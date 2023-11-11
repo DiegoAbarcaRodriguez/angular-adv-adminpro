@@ -23,12 +23,15 @@ export class ModalImagenService {
     this.tipo = tipo;
     this.id = id;
 
+    console.log(img)
 
     if (img?.includes('https')) {
       this.img = img;
     } else {
       this.img = `${baseUrl}/upload/${tipo}/${img}`;
     }
+
+    console.log(this.tipo,this.id,this.img)
   }
 
   cerrarModal() {

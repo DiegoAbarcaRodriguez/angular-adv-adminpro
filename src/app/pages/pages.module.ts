@@ -14,6 +14,10 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CommonModule } from '@angular/common';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
+import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
+import { PipesModule } from '../pipes/pipes.module';
+import { MedicoComponent } from './mantenimientos/medicos/medico/medico.component';
 
 @NgModule({
     imports: [
@@ -22,7 +26,8 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
         ComponentsModule,
         FormsModule,
         ReactiveFormsModule,
-        CommonModule
+        CommonModule,
+        PipesModule
 
     ],
     declarations: [
@@ -34,7 +39,10 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
         PromesasComponent,
         RxjsComponent,
         PerfilComponent,
-        UsuariosComponent
+        UsuariosComponent,
+        HospitalesComponent,
+        MedicosComponent,
+        MedicoComponent
     ],
     exports: [],
 })
