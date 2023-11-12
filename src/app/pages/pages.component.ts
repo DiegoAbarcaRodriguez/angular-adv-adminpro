@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
-declare function customInitFunctions():void; //Notación emplea para denotar una función como global
+import { SidebarService } from '../services/sidebar.service';
+declare function customInitFunctions(): void; //Notación emplea para denotar una función como global
 
 @Component({
   selector: 'app-pages',
@@ -8,12 +9,16 @@ declare function customInitFunctions():void; //Notación emplea para denotar una
   styles: [
   ]
 })
-export class PagesComponent implements OnInit{
+export class PagesComponent implements OnInit {
 
-  constructor(private settingsService:SettingsService){}
+  constructor(
+    private settingsService: SettingsService,
+    private sidebarService: SidebarService
+  ) { }
 
   ngOnInit(): void {
     customInitFunctions();
+    this.sidebarService.cargarMenu();
   }
 
 }

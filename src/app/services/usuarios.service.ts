@@ -24,12 +24,22 @@ export class UsuarioService {
         return localStorage.getItem('token') || '';
     }
 
+    get role(): 'ADMIN_ROLE' | 'USER_ROLE' | undefined {
+        return this.usuario.role;
+    }
+
     get uid() {
         return this.usuario.uid || '';
     }
 
+    guardarLocalStorage(token: string, menu: any[]) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('menu', JSON.stringify(menu));
+    }
+
     logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('menu');
         if (this.usuario.google)
             google.accounts.id.revoke(this.usuario.email, () => {
             });
@@ -46,7 +56,7 @@ export class UsuarioService {
                 map((resp: any) => {
                     const { email, google, nombre, role, img, uid } = resp.usuario;
                     this.usuario = new Usuario(nombre, email, img ?? '', role, img, google, uid);
-                    localStorage.setItem('token', resp.token);
+                    this.guardarLocalStorage(resp.token, resp.menu);
                     return true
                 }),
                 catchError(() => of(false))
@@ -57,7 +67,7 @@ export class UsuarioService {
 
     crearUsuario(formData: RegisterForm) {
         return this.httpClient.post(baseURL + '/usuarios', formData)
-            .pipe(tap((resp: any) => localStorage.setItem('token', resp.token)))
+            .pipe(tap((resp: any) => this.guardarLocalStorage(resp.token, resp.menu)));
     }
 
     actualizarPefil(data: { email: string, nombre: string, role: string }) {
@@ -71,12 +81,12 @@ export class UsuarioService {
 
     login(formData: LoginForm) {
         return this.httpClient.post(baseURL + '/login', formData)
-            .pipe(tap((resp: any) => localStorage.setItem('token', resp.token)))
+            .pipe(tap((resp: any) => this.guardarLocalStorage(resp.token, resp.menu)))
     }
 
     loginGoogle(token: string) {
         return this.httpClient.post(baseURL + '/login/google', { token })
-            .pipe(tap((resp: any) => localStorage.setItem('token', resp.token)))
+            .pipe(tap((resp: any) => this.guardarLocalStorage(resp.token, resp.menu)))
     }
 
     cargarUsuarios(desde: number = 0) {

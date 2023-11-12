@@ -28,6 +28,9 @@ export class BusquedasService {
     }
 
 
+    busquedaGlobal(termino: string) {
+        return this.httpClient.get(baseURL + '/todo/' + termino, { headers: { 'x-token': this.token } })
+    }
 
     buscar(tipo: 'usuarios' | 'hospitales' | 'medicos', termino: string = '') {
         return this.httpClient.get(baseURL + '/todo/coleccion/' + tipo + '/' + termino, { headers: { 'x-token': this.token } })
